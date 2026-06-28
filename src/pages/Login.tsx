@@ -42,12 +42,13 @@ const handleLogin = () => {
           borderRadius: 3,
         }}
       >
-        <Typography
-          variant="h4"
-          textAlign="center"
-          fontWeight="bold"
-          mb={4}
-        >
+      <Typography
+  variant="h4"
+  sx={{
+    textAlign: "center",
+    fontWeight: "bold",
+  }}
+>
           Login
         </Typography>
 
@@ -69,7 +70,12 @@ error={passwordError}
 text="Login"
 onClick={handleLogin}
 />
-        <Typography textAlign="center" mt={2}>
+        <Typography
+  sx={{
+    textAlign: "center",
+    mt: 2,
+  }}
+>
           Don't have an account?{" "}
           <Link to="/signup" style={{ textDecoration: "none" }}>
             Sign Up

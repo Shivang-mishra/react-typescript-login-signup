@@ -53,11 +53,13 @@ const handleSignup = () => {
         }}
       >
         <Typography
-          variant="h4"
-          textAlign="center"
-          fontWeight="bold"
-          mb={3}
-        >
+  variant="h4"
+  sx={{
+    textAlign: "center",
+    fontWeight: "bold",
+    mb: 3,
+  }}
+>
           SIGN UP
         </Typography>
 
@@ -94,7 +96,12 @@ error={confirmPasswordError}
 text="Sign Up"
 onClick={handleSignup}
 />
-        <Typography textAlign="center" mt={2}>
+       <Typography
+  sx={{
+    textAlign: "center",
+    mt: 2,
+  }}
+>
   Already have an account?{" "}
   <Link to="/login" style={{ textDecoration: "none" }}>
     Login
