@@ -1,15 +1,9 @@
-import {
-  Box,
-  Paper,
-  Typography,
-  TextField,
-  Button,
-
-} from "@mui/material";
+import {Box,Paper,Typography} from "@mui/material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { Email } from "@mui/icons-material";
-
+import CustomInput from "../components/CustomInput";
+import CustomButton from "../components/CustomButton";
+import { validateLogin } from "../utils/loginValidation";
 const Login = () => {
 
   const [email, setEmail] = useState("");
@@ -17,28 +11,16 @@ const Login = () => {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const handleLogin = () => {
+const handleLogin = () => {
+  const result = validateLogin(email, password);
 
-    setEmailError("");
-    setPasswordError("");
+  setEmailError(result.errors.email);
+  setPasswordError(result.errors.password);
 
-    let valid = true;
-
-    if (email === "") {
-      setEmailError("Email is required");
-      valid = false;
-    }
-
-    if (password === "") {
-      setPasswordError("Password is required");
-      valid = false;
-    }
-
-    if (valid) {
-      alert("Login Successful");
-    }
-
-  };
+  if (result.valid) {
+    alert("Login Successful");
+  }
+};
   return (
     <Box
       sx={{
@@ -52,7 +34,10 @@ const Login = () => {
       <Paper
         elevation={8}
         sx={{
-          width: 400,
+         width: {
+  xs: "90%",
+  sm: 400,
+},
           padding: 4,
           borderRadius: 3,
         }}
@@ -66,39 +51,24 @@ const Login = () => {
           Login
         </Typography>
 
-        <TextField
-          label="Email"
-          fullWidth
-          margin="normal"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          error={emailError !== ""}
-          helperText={emailError}
-        />
+  <CustomInput
+label="Email"
+value={email}
+onChange={(e)=>setEmail(e.target.value)}
+error={emailError}
+/>
 
-        <TextField
-          label="Password"
-          type="password"
-          fullWidth
-          margin="normal"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          error={passwordError !== ""}
-          helperText={passwordError}
-        />
-
-        <Button
-  variant="contained"
-  fullWidth
-  onClick={handleLogin}
-  sx={{
-    mt: 3,
-    py: 1.4,
-    borderRadius: 2,
-  }}
->
-  Login
-</Button>
+<CustomInput
+label="Password"
+type="password"
+value={password}
+onChange={(e)=>setPassword(e.target.value)}
+error={passwordError}
+/>
+ <CustomButton
+text="Login"
+onClick={handleLogin}
+/>
         <Typography textAlign="center" mt={2}>
           Don't have an account?{" "}
           <Link to="/signup" style={{ textDecoration: "none" }}>

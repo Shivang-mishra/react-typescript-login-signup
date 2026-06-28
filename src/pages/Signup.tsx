@@ -1,12 +1,9 @@
-import {
-  Box,
-  Paper,
-  Typography,
-  TextField,
-  Button,
-} from "@mui/material";
+import {Box, Paper,Typography} from "@mui/material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import CustomInput from "../components/CustomInput";
+import CustomButton from "../components/CustomButton";
+import { validateSignup } from "../utils/signupValidation";
 const Signup = () => {
   const [name, setName] = useState("");
 const [email, setEmail] = useState("");
@@ -18,46 +15,19 @@ const [emailError, setEmailError] = useState("");
 const [passwordError, setPasswordError] = useState("");
 const [confirmPasswordError, setConfirmPasswordError] = useState("");
 const handleSignup = () => {
+  const result = validateSignup(
+    name,
+    email,
+    password,
+    confirmPassword
+  );
 
-  setNameError("");
-  setEmailError("");
-  setPasswordError("");
-  setConfirmPasswordError("");
+  setNameError(result.errors.name);
+  setEmailError(result.errors.email);
+  setPasswordError(result.errors.password);
+  setConfirmPasswordError(result.errors.confirmPassword);
 
-  let valid = true;
-
-  if (name === "") {
-    setNameError("Name is required");
-    valid = false;
-  }
-
-  if (email === "") {
-    setEmailError("Email is required");
-    valid = false;
-  }
-if (email !== "" && !email.includes("@")) {
-  setEmailError("Enter a valid email");
-  valid = false;
-}
-  if (password === "") {
-    setPasswordError("Password is required");
-    valid = false;
-  }else if (password.length < 6) {
-  setPasswordError("Password must be at least 6 characters");
-  valid = false;
-}
-
-  if (confirmPassword === "") {
-    setConfirmPasswordError("Confirm Password is required");
-    valid = false;
-  }
-
-  if (password !== confirmPassword) {
-    setConfirmPasswordError("Passwords do not match");
-    valid = false;
-  }
-
-  if (valid) {
+  if (result.valid) {
     alert("Signup Successful");
   }
 };
@@ -74,7 +44,10 @@ if (email !== "" && !email.includes("@")) {
       <Paper
         elevation={8}
         sx={{
-          width: 400,
+          width: {
+  xs: "90%",
+  sm: 400,
+},
           padding: 4,
           borderRadius: 3,
         }}
@@ -88,60 +61,39 @@ if (email !== "" && !email.includes("@")) {
           SIGN UP
         </Typography>
 
-        <TextField
-  label="Full Name"
-  fullWidth
-  margin="normal"
-  value={name}
-  onChange={(e) => setName(e.target.value)}
-  error={nameError !== ""}
-  helperText={nameError}
+        <CustomInput
+label="Full Name"
+value={name}
+onChange={(e)=>setName(e.target.value)}
+error={nameError}
 />
 
-        <TextField
-  label="Email"
-  type="email"
-  fullWidth
-  margin="normal"
-  value={email}
-  onChange={(e) => setEmail(e.target.value)}
-  error={emailError !== ""}
-  helperText={emailError}
+<CustomInput
+label="Email"
+value={email}
+onChange={(e)=>setEmail(e.target.value)}
+error={emailError}
 />
 
-        <TextField
-  label="Password"
-  type="password"
-  fullWidth
-  margin="normal"
-  value={password}
-  onChange={(e) => setPassword(e.target.value)}
-  error={passwordError !== ""}
-  helperText={passwordError}
+<CustomInput
+label="Password"
+type="password"
+value={password}
+onChange={(e)=>setPassword(e.target.value)}
+error={passwordError}
 />
 
-      <TextField
-  label="Confirm Password"
-  type="password"
-  fullWidth
-  margin="normal"
-  value={confirmPassword}
-  onChange={(e) => setConfirmPassword(e.target.value)}
-  error={confirmPasswordError !== ""}
-  helperText={confirmPasswordError}
+<CustomInput
+label="Confirm Password"
+type="password"
+value={confirmPassword}
+onChange={(e)=>setConfirmPassword(e.target.value)}
+error={confirmPasswordError}
 />
- <Button
-  variant="contained"
-  fullWidth
-  onClick={handleSignup}
-  sx={{
-    mt: 3,
-    py: 1.5,
-    borderRadius: 2,
-  }}
->
-  Sign Up
-</Button>
+ <CustomButton
+text="Sign Up"
+onClick={handleSignup}
+/>
         <Typography textAlign="center" mt={2}>
   Already have an account?{" "}
   <Link to="/login" style={{ textDecoration: "none" }}>
